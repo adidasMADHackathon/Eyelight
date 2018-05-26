@@ -168,11 +168,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Coordenada.cpp" />
+    <ClCompile Include="Jugador.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
+    <ClCompile Include="Recta.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Coordenada.h" />
+    <ClInclude Include="Jugador.h" />
     <ClInclude Include="object.h" />
+    <ClInclude Include="Recta.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

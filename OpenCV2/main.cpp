@@ -20,6 +20,21 @@
 
 #include "Object.h"
 
+#include "Coordenada.h"
+#include "Recta.h"
+#include <cstring>
+#include <math.h>
+#include <cmath>
+#define _USE_MATH_DEFINES
+# define M_PI 3.14159265358979323846 /* pi */
+Recta getRect(Coordenada, Coordenada);
+double calc_distance(Coordenada, Coordenada);
+double getAngle(Recta, Recta);
+double getAreaOfPoint(Recta, Coordenada);
+using std::cout;
+using std::cin;
+using std::endl;
+
 
 //initial min and max HSV filter values.
 //these will be changed using trackbars
@@ -423,6 +438,47 @@ void calibrateLEDs(double angle, double distance)
 	else if (angle > 326'25 && angle <= 348'75) {
 		ledBelt[15] = intense;
 	}
+}
+
+Recta getRect(Coordenada j1, Coordenada j2)
+{
+	Recta rect;
+	//Recta *rect = new Recta();
+	rect.setM((j1.getY() - j2.getY()) / (j1.getX() - j2.getX()));
+	rect.setCoor1(j1.getX(), j1.getY());
+	rect.setCoor2(j2.getX(), j2.getY());
+	rect.setVector(j2.getX() - j1.getX(), j2.getY() - j1.getY());
+	return rect;
+}
+
+double getAreaOfPoint(Recta r, Coordenada j2) {
+	double result;
+
+	result = (j2.getX() - r.getCoor1().getX())*(r.getCoor2().getY() - r.getCoor1().getY()) - (j2.getY() - r.getCoor1().getY())*(r.getCoor2().getX() - r.getCoor1().getX());
+
+	return result;
+}
+
+double calc_distance(Coordenada j1, Coordenada j2) {
+	int x = j1.getX() - j2.getX();
+	int y = j1.getY() - j2.getY();
+	double distance = sqrt(pow(x, 2) + pow(y, 2));
+
+	return distance;
+}
+
+static double getAngle(Recta r1, Recta r2)
+{
+	double numerador = r1.getVector().getX()*r2.getVector().getX() + r1.getVector().getY()*r2.getVector().getY();
+	double denom = sqrt(pow(r1.getVector().getX(), 2) + pow(r1.getVector().getY(), 2)*pow(r2.getVector().getX(), 2) + pow(r2.getVector().getY(), 2));
+	//double res = (r1.getM() - r2.getM()) / (1 + r1.getM() * r2.getM());
+	//double angleInRadians = atan(res);
+	double angleInRadians = acos(numerador / denom);
+	double angle = angleInRadians * 180 / M_PI;
+	double result = getAreaOfPoint(r1, r2.getCoor2());
+	if (result < 0)
+		angle = 360 - angle;
+	return angle;
 }
 
 int main(int argc, char* argv[])
