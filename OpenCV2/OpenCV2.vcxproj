@@ -173,12 +173,14 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="Recta.cpp" />
+    <ClCompile Include="SerialPort\SerialPort.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Coordenada.h" />
     <ClInclude Include="Jugador.h" />
     <ClInclude Include="object.h" />
     <ClInclude Include="Recta.h" />
+    <ClInclude Include="SerialPort\SerialPort.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

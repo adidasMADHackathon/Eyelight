@@ -18,15 +18,14 @@
 #include <iostream>
 #include <vector>
 
-#include "Object.h"
-#include "SerialPort.h"
-#include "SerialPort.cpp"
+#include "SerialPort/SerialPort.h"
 
 #include "Coordenada.h"
 #include "Recta.h"
 #include <cstring>
 #include <math.h>
 #include <cmath>
+#include "Object.h"
 #define _USE_MATH_DEFINES
 # define M_PI 3.14159265358979323846 /* pi */
 Recta getRect(Coordenada, Coordenada);
