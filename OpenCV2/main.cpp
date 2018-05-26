@@ -54,6 +54,10 @@ int ratio = 3;
 int kernel_size = 3;
 const char* window_name = "Edge Map";
 
+//Global vector where we're gonna send which leds turn on/off
+float ledBelt[16];
+const int distMax = 800;
+
 void on_trackbar(int, void*)
 {//This function gets called whenever a
  // trackbar position is changed
@@ -280,6 +284,60 @@ void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFe
 		}
 		else putText(cameraFeed, "TOO MUCH NOISE! ADJUST FILTER", Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
 	}
+}
+
+void calibrateLEDs(double angle, double distance)
+{
+  float intense = 1-(distance / distMax);    
+
+  if ((angle > 0 && angle <= 11'25) || (angle > 348'75 && angle <= 360)){
+    ledBelt[0] = intense;
+  }
+  else if (angle > 11'25 && angle <= 33'75){
+    ledBelt[1] = intense;
+  }
+  else if (angle > 33'75 && angle <= 56'25){
+    ledBelt[2] = intense;
+  }
+  else if (angle > 56'25 && angle <= 78'75){
+    ledBelt[3] = intense;
+  }
+  else if (angle > 78'75 && angle <= 101'25){
+    ledBelt[4] = intense;
+  }
+  else if (angle > 101'25 && angle <= 123'75){
+    ledBelt[5] = intense;
+  }
+  else if (angle > 123'75 && angle <= 146'25){
+    ledBelt[6] = intense;
+  }
+  else if (angle > 146'25 && angle <= 168'75){
+    ledBelt[7] = intense;
+  }
+  else if (angle > 168'75 && angle <= 191'25){
+    ledBelt[8] = intense;
+  }
+  else if (angle > 191'25 && angle <= 213'75){
+    ledBelt[9] = intense;
+  }
+  else if (angle > 213'75 && angle <= 236'25){
+    ledBelt[10] = intense;
+  }
+  else if (angle > 236'25 && angle <= 258'75){
+    ledBelt[11] = intense;
+  }
+  else if (angle > 258'75 && angle <= 281'25){
+    ledBelt[12] = intense;
+  }
+  else if (angle > 281'25 && angle <= 303'75){
+    ledBelt[13] = intense;
+  }
+  else if (angle > 303'75 && angle <= 326'25){
+    ledBelt[14] = intense;
+  }
+  else if (angle > 326'25 && angle <= 348'75){
+    ledBelt[15] = intense;
+  }
 }
 
 int main(int argc, char* argv[])
