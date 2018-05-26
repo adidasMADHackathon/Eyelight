@@ -158,6 +158,8 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat &cameraFeed)
 					object.setXPos(moment.m10 / area);
 					object.setYPos(moment.m01 / area);
 
+
+
 					objects.push_back(object);
 
 					objectFound = true;
@@ -186,6 +188,12 @@ void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFe
 	vector<Vec4i> hierarchy;
 	//find contours of filtered image using openCV findContours function
 	findContours(temp, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+
+	//vector< vector<Point> > newContours;
+
+	
+
+
 	//use moments method to find our filtered object
 	double refArea = 0;
 	bool objectFound = false;
@@ -221,6 +229,12 @@ void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFe
 			//let user know you found an object
 			if (objectFound == true) {
 				//draw object location on screen
+
+				//Approx each cotour object to a geometric figure
+				for(int i=0;i<contours.size();i++)
+					cv::approxPolyDP(contours[i], contours[i], 0.1*cv::arcLength(contours[i], true), true);
+				
+
 				drawObject(objects, cameraFeed, temp, contours, hierarchy);
 			}
 
@@ -238,6 +252,10 @@ int main(int argc, char* argv[])
 	Mat cameraFeed;
 	Mat threshold;
 	Mat HSV;
+
+	//create vector of points
+
+	vector<vector<Point>>rectcount;
 
 	if (calibrationMode) {
 		//create slider bars for HSV filtering
@@ -311,10 +329,10 @@ int main(int argc, char* argv[])
 			morphOps(threshold);
 			trackFilteredObject(red, threshold, HSV, cameraFeed);
 			//then greens
-			cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
-			inRange(HSV, green.getHSVmin(), green.getHSVmax(), threshold);
-			morphOps(threshold);
-			trackFilteredObject(green, threshold, HSV, cameraFeed);
+			//cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+			//inRange(HSV, green.getHSVmin(), green.getHSVmax(), threshold);
+			//morphOps(threshold);
+			//trackFilteredObject(green, threshold, HSV, cameraFeed);
 
 		}
 		//show frames
