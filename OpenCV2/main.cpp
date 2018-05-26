@@ -290,7 +290,7 @@ void calibrateLEDs(double angle, double distance)
 {
   float intense = 1-(distance / distMax);    
 
-  if ((angle > 0 && angle <= 11'25) || (angle > 348'75 && angle <= 0)){
+  if ((angle > 0 && angle <= 11'25) || (angle > 348'75 && angle <= 360)){
     ledBelt[0] = intense;
   }
   else if (angle > 11'25 && angle <= 33'75){
