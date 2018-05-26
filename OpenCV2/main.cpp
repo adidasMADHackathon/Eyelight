@@ -288,7 +288,7 @@ void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFe
 
 void calibrateLEDs(double angle, double distance)
 {
-  float intense = 1 - (distance / distMax);    
+  float intense = 1-(distance / distMax);    
 
   if ((angle > 0 && angle <= 11'25) || (angle > 348'75 && angle <= 0)){
     ledBelt[0] = intense;
