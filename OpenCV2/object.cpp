@@ -60,6 +60,32 @@ Object::Object(string name) {
 		setColor(Scalar(0, 0, 255));
 
 	}
+
+	if (name == "customred") {
+
+		//TODO: use "calibration mode" to find HSV min
+		//and HSV max values
+
+		setHSVmin(Scalar(111, 0, 0));
+		setHSVmax(Scalar(255, 255, 255));
+
+		//BGR value for Red:
+		setColor(Scalar(0, 0, 255));
+
+	}
+
+	if (name == "customyellow") {
+
+		//TODO: use "calibration mode" to find HSV min
+		//and HSV max values
+
+		setHSVmin(Scalar(0, 0, 255));
+		setHSVmax(Scalar(90, 255, 255));
+
+		//BGR value for Red:
+		setColor(Scalar(0, 255, 255));
+
+	}
 }
 
 Object::~Object(void)

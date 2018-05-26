@@ -22,6 +22,7 @@
 
 #include "Coordenada.h"
 #include "Recta.h"
+#include "Jugador.h"
 #include <cstring>
 #include <math.h>
 #include <cmath>
@@ -303,6 +304,7 @@ vector<Point> trackPlayer(Mat &cameraFeed) {
 				Object playerP0 = objects[0];
 				Point dir = getPointingAngle(playerP0, contours[0]);
 
+
 				vector<Point> player;
 				player.push_back(Point(playerP0.getXPos(), playerP0.getYPos()));
 				player.push_back(dir);
@@ -319,6 +321,100 @@ vector<Point> trackPlayer(Mat &cameraFeed) {
 	vector<Point> voidPlayer;
 	voidPlayer.push_back(Point(0, 0));
 	voidPlayer.push_back(Point(0, 0));
+	return voidPlayer;
+}
+
+vector<Point> trackTeam(Mat &cameraFeed, bool ownTeam) {
+	Mat threshold;
+	Mat HSV;
+	std::string color;
+	if (ownTeam) color = "customred";
+	else color = "customyellow";
+	Object theObject(color);
+	
+
+	//first find blue objects
+	cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+	cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
+	inRange(HSV, theObject.getHSVmin(), theObject.getHSVmax(), threshold);
+	morphOps(threshold);
+
+	vector <Object> objects;
+	Mat temp;
+	threshold.copyTo(temp);
+	//these two vectors needed for output of findContours
+	vector< vector<Point> > contours;
+	vector<Vec4i> hierarchy;
+	//find contours of filtered image using openCV findContours function
+	findContours(temp, contours, hierarchy, CV_RETR_CCOMP, CV_CHAIN_APPROX_SIMPLE);
+
+	//use moments method to find our filtered object
+	double refArea = 0;
+	bool objectFound = false;
+	if (hierarchy.size() > 0) {
+		int numObjects = hierarchy.size();
+		//if number of objects greater than MAX_NUM_OBJECTS we have a noisy filter
+		if (numObjects<MAX_NUM_OBJECTS) {
+			for (int index = 0; index >= 0; index = hierarchy[index][0]) {
+
+				Moments moment = moments((cv::Mat)contours[index]);
+				double area = moment.m00;
+
+				//if the area is less than 20 px by 20px then it is probably just noise
+				//if the area is the same as the 3/2 of the image size, probably just a bad filter
+				//we only want the object with the largest area so we safe a reference area each
+				//iteration and compare it to the area in the next iteration.
+				if (area>MIN_OBJECT_AREA) {
+
+					Object object;
+
+					object.setXPos(moment.m10 / area);
+					object.setYPos(moment.m01 / area);
+					object.setType(theObject.getType());
+					object.setColor(theObject.getColor());
+
+					objects.push_back(object);
+
+					objectFound = true;
+
+				}
+				else objectFound = false;
+			}
+			//let user know you found an object
+			if (objectFound == true) {
+				//draw object location on screen
+
+				//Approx each cotour object to a geometric figure
+				for (int i = 0; i<contours.size(); i++)
+					cv::approxPolyDP(contours[i], contours[i], 0.1*cv::arcLength(contours[i], true), true);
+				drawObject(objects, cameraFeed, temp, contours, hierarchy);
+
+				vector<Point> players;
+				for (int i = 0; i < objects.size(); i++)
+					players.push_back(Point(objects.at(i).getXPos(), objects.at(i).getYPos()));
+				return players;
+				
+
+				/*Object playerP0 = objects[0];
+				Point dir = getPointingAngle(playerP0, contours[0]);
+
+				vector<Point> player;
+				player.push_back(Point(playerP0.getXPos(), playerP0.getYPos()));
+				player.push_back(dir);
+				return player;*/
+
+
+
+			}
+
+		}
+		else putText(cameraFeed, "TOO MUCH NOISE! ADJUST FILTER", Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
+	}
+
+	//No return value
+	vector<Point> voidPlayer;
+	//voidPlayer.push_back(Point(0, 0));
+	//voidPlayer.push_back(Point(0, 0));
 	return voidPlayer;
 }
 
@@ -441,11 +537,23 @@ void calibrateLEDs(double angle, double distance)
 	}
 }
 
+Coordenada getCoordinateFromPoint(Point p) {
+	Coordenada coor;
+	coor.setX(p.x);
+	coor.setY(p.y);
+	return coor;
+}
+
 Recta getRect(Coordenada j1, Coordenada j2)
 {
 	Recta rect;
 	//Recta *rect = new Recta();
-	rect.setM((j1.getY() - j2.getY()) / (j1.getX() - j2.getX()));
+	if (j1.getX() - j2.getX() == 0) {
+		rect.setM(10000);
+	}
+	else {
+		rect.setM((j1.getY() - j2.getY()) / (j1.getX() - j2.getX()));
+	}
 	rect.setCoor1(j1.getX(), j1.getY());
 	rect.setCoor2(j2.getX(), j2.getY());
 	rect.setVector(j2.getX() - j1.getX(), j2.getY() - j1.getY());
@@ -470,12 +578,29 @@ double calc_distance(Coordenada j1, Coordenada j2) {
 
 static double getAngle(Recta r1, Recta r2)
 {
-	double numerador = r1.getVector().getX()*r2.getVector().getX() + r1.getVector().getY()*r2.getVector().getY();
-	double denom = sqrt(pow(r1.getVector().getX(), 2) + pow(r1.getVector().getY(), 2)*pow(r2.getVector().getX(), 2) + pow(r2.getVector().getY(), 2));
+	double numerador = r1.getVector().getX()*r2.getVector().getX() + 
+						r1.getVector().getY()*r2.getVector().getY();
+	
+	double denom = sqrt((pow(r1.getVector().getX(), 2) + pow(r1.getVector().getY(), 2))*
+						(pow(r2.getVector().getX(), 2) + pow(r2.getVector().getY(), 2)));
+
 	//double res = (r1.getM() - r2.getM()) / (1 + r1.getM() * r2.getM());
 	//double angleInRadians = atan(res);
-	double angleInRadians = acos(numerador / denom);
-	double angle = angleInRadians * 180 / M_PI;
+	if (denom == 0) {
+		denom = 1;
+		cout << "ENTRAAAAA" << endl;
+	}
+	double res = numerador / denom;
+	double angle;
+	if (res < -1 || res > 1) {
+		cout << "ENTRAAAAAAAAAAAAAAAAAAAAAAAAA" << endl;
+		angle = 0;
+	}
+	else {
+		double angleInRadians = acos(numerador / denom);
+		angle = angleInRadians * 180 / M_PI;
+	}
+	
 	double result = getAreaOfPoint(r1, r2.getCoor2());
 	if (result < 0)
 		angle = 360 - angle;
@@ -518,7 +643,39 @@ int main(int argc, char* argv[])
 		if (!src.data) return -1;
 
 		vector<Point> player = trackPlayer(cameraFeed);
+		Coordenada coorPlayer = getCoordinateFromPoint(player.at(0));
+		Coordenada coor2Player = getCoordinateFromPoint(player.at(1));
+		Recta playerDirection = getRect(coorPlayer, coor2Player);
+		//cout << "Jugador Principal: ángulo (" << coorPlayer.getX() << "," << coorPlayer.getY() << ")" << endl;
+
 		cv::line(cameraFeed, player.at(0), player.at(1), Scalar(110, 220, 0), 2, 8);
+
+		vector<Point> ownTeam = trackTeam(cameraFeed, false);
+		vector<Point> otherTeam = trackTeam(cameraFeed, true);
+		vector<Jugador> myTeam;
+		vector<Jugador> opponents;
+		
+		for (int i = 0; i < ownTeam.size(); i++) {
+			Coordenada c1 = getCoordinateFromPoint(ownTeam.at(i));
+			Recta r = getRect(coorPlayer, c1);
+			double angle = getAngle(playerDirection, r);
+			double distance = calc_distance(coorPlayer, c1);
+			myTeam.push_back(Jugador(c1,angle,distance,true));
+			cv::circle(cameraFeed, cv::Point(c1.getX(), c1.getY()), 6, Scalar(110, 220, 0));
+			cout << "Jugador " << i << ": ángulo (" << angle << "º)" << endl;
+		}
+		/*
+		for (int i = 0; i < otherTeam.size(); i++) {
+			Coordenada c1 = getCoordinateFromPoint(otherTeam.at(i));
+			Recta r = getRect(coorPlayer, c1);
+			double angle = getAngle(playerDirection, r);
+			double distance = calc_distance(coorPlayer, c1);
+			opponents.push_back(Jugador(c1, angle, distance, false));
+
+			//cout << "Jugador " << i << ": ángulo (" << angle << "º)" << endl;
+		}*/
+
+
 
 		imshow(windowName, cameraFeed);
 		waitKey(30);
