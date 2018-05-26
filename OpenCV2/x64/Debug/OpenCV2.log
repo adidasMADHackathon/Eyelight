@@ -1,0 +1,23 @@
+﻿  object.cpp
+  main.cpp
+c:\users\diego\documents\github\blind\opencv2\main.cpp(39): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(75): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(75): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(76): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(76): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(77): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(77): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(78): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(78): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(79): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(79): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(80): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\documents\github\blind\opencv2\main.cpp(80): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\documents\github\blind\opencv2\main.cpp(142): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(158): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(159): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(193): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(209): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\documents\github\blind\opencv2\main.cpp(210): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+  Generando código...
+  OpenCV2.vcxproj -> C:\Users\Diego\Documents\GitHub\blind\x64\Debug\OpenCV2.exe
