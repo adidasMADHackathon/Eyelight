@@ -19,6 +19,8 @@
 #include <vector>
 
 #include "Object.h"
+#include "SerialPort.h"
+#include "SerialPort.cpp"
 
 #include "Coordenada.h"
 #include "Recta.h"
@@ -479,6 +481,27 @@ static double getAngle(Recta r1, Recta r2)
 	if (result < 0)
 		angle = 360 - angle;
 	return angle;
+}
+
+//Serial port declarations 
+SerialPort *arduino;
+char* PORT_NAME = "\\\\.\\COM5";
+
+void initSerialWritter(char* portName) {
+	arduino = new SerialPort(portName);
+	if (arduino->isConnected()) cout << "Connection Established" << endl;
+	else cout << "ERROR, check port name";
+}
+
+void writeToSerialPort(char* message, unsigned int length, unsigned int delay) {
+	if (!arduino->isConnected()) {
+		cout << "ERROR: Arduino is not connected\n";
+	}
+	else {
+		arduino->writeSerialPort(message, length);
+		arduino->writeSerialPort("\n", 1);
+		Sleep(delay);
+	}
 }
 
 int main(int argc, char* argv[])
