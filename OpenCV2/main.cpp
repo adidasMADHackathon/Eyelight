@@ -91,6 +91,39 @@ void createTrackbars() {
 	createTrackbar("V_MAX", trackbarWindowName, &V_MAX, V_MAX, on_trackbar);
 }
 
+Point getPointingAngle(Object centralPoint, vector<Point> contours) {
+	if (contours.size() != 3) return NULL;
+	Point extremePoint;
+	int distanceP0 = sqrt(pow( contours[0].x - centralPoint.getXPos(),2) + pow( contours[0].y - centralPoint.getYPos(),2));
+	int distanceP1 = sqrt(pow( contours[1].x - centralPoint.getXPos(),2) + pow( contours[1].y - centralPoint.getYPos(),2));
+	int distanceP2 = sqrt(pow( contours[2].x - centralPoint.getXPos(),2) + pow( contours[2].y - centralPoint.getYPos(),2));
+
+
+	//Calc maximum distance
+	int temp;
+	int distTemp;
+	if (distanceP0 > distanceP1) {
+		extremePoint = contours[0];
+		distTemp = distanceP0;
+		temp = 0;
+	}else {
+		extremePoint = contours[1];
+		distTemp = distanceP0;
+		temp = 1;
+	}
+	if (distTemp > distanceP2) {
+		extremePoint = contours[temp];
+	
+	}
+
+	else {
+		extremePoint = contours[2];
+	}
+
+	
+	return extremePoint;
+}
+
 void drawObject(vector<Object> theObjects, Mat &frame, Mat &temp, vector< vector<Point> > contours, vector<Vec4i> hierarchy) {
 
 	for (int i = 0; i<theObjects.size(); i++) {
@@ -98,6 +131,11 @@ void drawObject(vector<Object> theObjects, Mat &frame, Mat &temp, vector< vector
 		cv::circle(frame, cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos()), 5, theObjects.at(i).getColor());
 		cv::putText(frame, intToString(theObjects.at(i).getXPos()) + " , " + intToString(theObjects.at(i).getYPos()), cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos() + 20), 1, 1, theObjects.at(i).getColor());
 		cv::putText(frame, theObjects.at(i).getType(), cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos() - 20), 1, 2, theObjects.at(i).getColor());
+		if (contours[i].size() == 3) {
+			Point dir=getPointingAngle(theObjects.at(i), contours[i]);
+			cv::circle(frame, dir, 5, theObjects.at(i).getColor());
+		}
+		
 	}
 }
 
@@ -177,6 +215,7 @@ void trackFilteredObject(Mat threshold, Mat HSV, Mat &cameraFeed)
 		else putText(cameraFeed, "TOO MUCH NOISE! ADJUST FILTER", Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
 	}
 }
+
 
 void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFeed) {
 
