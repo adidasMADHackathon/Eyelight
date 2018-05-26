@@ -32,4 +32,9 @@
 *.app
 
 # Visual Studio
+.tlog
+.log
+.pdb
+.idb
+.ilk
 .vs
