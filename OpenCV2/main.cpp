@@ -486,54 +486,56 @@ void trackFilteredObject(Object theObject, Mat threshold, Mat HSV, Mat &cameraFe
 void calibrateLEDs(double angle, double distance)
 {
 	float intense = 1 - (distance / distMax);
-
-	if ((angle > 0 && angle <= 11'25) || (angle > 348'75 && angle <= 360)) {
+	if ((angle > 0 && angle <= 11.25f) || (angle > 348.75f && angle <= 360)) {
 		ledBelt[0] = intense;
 	}
-	else if (angle > 11'25 && angle <= 33'75) {
+	else if (angle > 11.25f && angle <= 33.75f) {
 		ledBelt[1] = intense;
 	}
-	else if (angle > 33'75 && angle <= 56'25) {
+	else if (angle > 33.75f && angle <= 56.25f) {
 		ledBelt[2] = intense;
 	}
-	else if (angle > 56'25 && angle <= 78'75) {
+	else if (angle > 56.25f && angle <= 78.75f) {
 		ledBelt[3] = intense;
 	}
-	else if (angle > 78'75 && angle <= 101'25) {
+	else if (angle > 78.75f && angle <= 101.25f) {
 		ledBelt[4] = intense;
 	}
-	else if (angle > 101'25 && angle <= 123'75) {
+	else if (angle > 101.25f && angle <= 123.75f) {
 		ledBelt[5] = intense;
 	}
-	else if (angle > 123'75 && angle <= 146'25) {
+	else if (angle > 123.75f && angle <= 146.25f) {
 		ledBelt[6] = intense;
 	}
-	else if (angle > 146'25 && angle <= 168'75) {
+	else if (angle > 146.25f && angle <= 168.75f) {
 		ledBelt[7] = intense;
 	}
-	else if (angle > 168'75 && angle <= 191'25) {
+	else if (angle > 168.75f && angle <= 191.25f) {
 		ledBelt[8] = intense;
 	}
-	else if (angle > 191'25 && angle <= 213'75) {
+	else if (angle > 191.25f && angle <= 213.75f) {
 		ledBelt[9] = intense;
 	}
-	else if (angle > 213'75 && angle <= 236'25) {
+	else if (angle > 213.75f && angle <= 236.25f) {
 		ledBelt[10] = intense;
 	}
-	else if (angle > 236'25 && angle <= 258'75) {
+	else if (angle > 236.25f && angle <= 258.75f) {
 		ledBelt[11] = intense;
 	}
-	else if (angle > 258'75 && angle <= 281'25) {
+	else if (angle > 258.75f && angle <= 281.25f) {
 		ledBelt[12] = intense;
 	}
-	else if (angle > 281'25 && angle <= 303'75) {
+	else if (angle > 281.25f && angle <= 303.75f) {
 		ledBelt[13] = intense;
 	}
-	else if (angle > 303'75 && angle <= 326'25) {
+	else if (angle > 303.75f && angle <= 326.25f) {
 		ledBelt[14] = intense;
 	}
-	else if (angle > 326'25 && angle <= 348'75) {
+	else if (angle > 326.25f && angle <= 348.75f) {
 		ledBelt[15] = intense;
+	}
+	else {
+		cout << "No entra en CalibrateLEDS" << endl;
 	}
 }
 
@@ -607,9 +609,11 @@ static double getAngle(Recta r1, Recta r2)
 	return angle;
 }
 
+
+
 //Serial port declarations 
 SerialPort *arduino;
-char* PORT_NAME = "\\\\.\\COM5";
+char* PORT_NAME = "\\\\.\\COM4";
 
 void initSerialWritter(char* portName) {
 	arduino = new SerialPort(portName);
@@ -628,16 +632,41 @@ void writeToSerialPort(char* message, unsigned int length, unsigned int delay) {
 	}
 }
 
+void getStringFromArray() {
+	string result;
+	for (int i = 0; i < 16; i++) {
+		//float rounded_up = ; //redondear a dos decimales
+		//cout << roundf(ledBelt[i] * 100) / 100 << endl;
+		result.append(to_string(roundf(ledBelt[i] * 100) / 100));
+		if (i != 15)
+			result.append(",");
+	}
+	char *cstr = new char[result.length() + 1];
+	strcpy(cstr, result.c_str());
+	writeToSerialPort(cstr, result.length() + 1, 0);
+	writeToSerialPort("\n", 1, 0);
+	//cout << result << endl;
+}
+
+void initArray() {
+	for (int i = 0; i < 16; i++) {
+		ledBelt[i] = 0.0f;
+	}
+}
+
 int main(int argc, char* argv[])
 {
 	Mat cameraFeed;
 	vector<vector<Point>>rectcount;
 	VideoCapture capture;
+	initSerialWritter(PORT_NAME);
+
 	capture.open(0);
 	capture.set(CV_CAP_PROP_FRAME_WIDTH, FRAME_WIDTH);
 	capture.set(CV_CAP_PROP_FRAME_HEIGHT, FRAME_HEIGHT);
 	waitKey(1000);
 	while (1) {
+		initArray();
 		capture.read(cameraFeed);
 		src = cameraFeed;
 		if (!src.data) return -1;
@@ -662,9 +691,11 @@ int main(int argc, char* argv[])
 			double distance = calc_distance(coorPlayer, c1);
 			myTeam.push_back(Jugador(c1,angle,distance,true));
 			cv::circle(cameraFeed, cv::Point(c1.getX(), c1.getY()), 6, Scalar(110, 220, 0));
-			cout << "Jugador " << i << ": ángulo (" << angle << "º)" << endl;
+			cout << "Jugador " << i << ": ángulo (" << angle << ")" << endl;
 		}
-		/*
+
+		
+		
 		for (int i = 0; i < otherTeam.size(); i++) {
 			Coordenada c1 = getCoordinateFromPoint(otherTeam.at(i));
 			Recta r = getRect(coorPlayer, c1);
@@ -673,9 +704,27 @@ int main(int argc, char* argv[])
 			opponents.push_back(Jugador(c1, angle, distance, false));
 
 			//cout << "Jugador " << i << ": ángulo (" << angle << "º)" << endl;
-		}*/
+		}
 
+		for (int i = 0; i < myTeam.size(); i++) {
+			for (int j = 0; j < opponents.size(); j++) {
+				if ((opponents.at(j).getAnglePLayer() - myTeam.at(i).getAnglePLayer()) > -10.0 &&
+					(opponents.at(j).getAnglePLayer() - myTeam.at(i).getAnglePLayer()) < 10.0) {
+					//Comprobar distancia para ver si está delante del compañero
+					if (opponents.at(j).getDistance() < myTeam.at(i).getDistance()) {
+						cout << "CUIDAAAAO QUE VIENEEEEEE" << endl;
+						break;
+					}
+						
+				}
+				if (j == (opponents.size() - 1)) {
+					calibrateLEDs(myTeam.at(i).getAnglePLayer(), myTeam.at(i).getDistance());
+					cout << "ENTRA : "<< i << endl;
+				}
+			}
+		}
 
+		getStringFromArray();
 
 		imshow(windowName, cameraFeed);
 		waitKey(30);
