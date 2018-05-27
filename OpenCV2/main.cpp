@@ -146,6 +146,21 @@ Point getPointingAngle(Object centralPoint, vector<Point> contours) {
 	return extremePoint;
 }
 
+void drawObject(vector<Object> theObjects, Mat &frame, Mat &temp, vector< vector<Point> > contours, vector<Vec4i> hierarchy, string text) {
+
+	for (int i = 0; i<theObjects.size(); i++) {
+		cv::drawContours(frame, contours, i, theObjects.at(i).getColor(), 3, 8, hierarchy);
+		cv::circle(frame, cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos()), 5, theObjects.at(i).getColor());
+		cv::putText(frame, intToString(theObjects.at(i).getXPos()) + " , " + intToString(theObjects.at(i).getYPos()), cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos() + 20), 1, 1, theObjects.at(i).getColor());
+		cv::putText(frame, text, cv::Point(theObjects.at(i).getXPos(), theObjects.at(i).getYPos() - 20), 1, 2, theObjects.at(i).getColor());
+		if (contours[i].size() == 3) {
+			Point dir = getPointingAngle(theObjects.at(i), contours[i]);
+			cv::circle(frame, dir, 5, theObjects.at(i).getColor());
+		}
+
+	}
+}
+
 void drawObject(vector<Object> theObjects, Mat &frame, Mat &temp, vector< vector<Point> > contours, vector<Vec4i> hierarchy) {
 
 	for (int i = 0; i<theObjects.size(); i++) {
@@ -304,13 +319,15 @@ vector<Point> trackPlayer(Mat &cameraFeed) {
 				Object playerP0 = objects[0];
 				Point dir = getPointingAngle(playerP0, contours[0]);
 
-
 				vector<Point> player;
 				player.push_back(Point(playerP0.getXPos(), playerP0.getYPos()));
 				player.push_back(dir);
 				return player;
 
 
+			}
+			else {
+				putText(cameraFeed, "No player", Point(0, 150), 1, 2, Scalar(0, 0, 255), 2);
 			}
 
 		}
@@ -324,14 +341,14 @@ vector<Point> trackPlayer(Mat &cameraFeed) {
 	return voidPlayer;
 }
 
-vector<Point> trackTeam(Mat &cameraFeed, bool ownTeam) {
+vector<Point> trackTeam(Mat &cameraFeed, bool opponent) {
 	Mat threshold;
 	Mat HSV;
 	std::string color;
-	if (ownTeam) color = "customred";
+	if (opponent) color = "customred";
 	else color = "customyellow";
 	Object theObject(color);
-	
+
 
 	//first find blue objects
 	cvtColor(cameraFeed, HSV, COLOR_BGR2HSV);
@@ -387,13 +404,13 @@ vector<Point> trackTeam(Mat &cameraFeed, bool ownTeam) {
 				//Approx each cotour object to a geometric figure
 				for (int i = 0; i<contours.size(); i++)
 					cv::approxPolyDP(contours[i], contours[i], 0.1*cv::arcLength(contours[i], true), true);
-				drawObject(objects, cameraFeed, temp, contours, hierarchy);
+				drawObject(objects, cameraFeed, temp, contours, hierarchy, opponent ? "opponent" : "team");
 
 				vector<Point> players;
 				for (int i = 0; i < objects.size(); i++)
 					players.push_back(Point(objects.at(i).getXPos(), objects.at(i).getYPos()));
 				return players;
-				
+
 
 				/*Object playerP0 = objects[0];
 				Point dir = getPointingAngle(playerP0, contours[0]);
@@ -405,6 +422,12 @@ vector<Point> trackTeam(Mat &cameraFeed, bool ownTeam) {
 
 
 
+			}
+			else {
+				if(opponent)
+					putText(cameraFeed, "No opponents", Point(0, 50), 1, 2, Scalar(0, 0, 255), 2);
+				else
+					putText(cameraFeed, "No team", Point(0, 100), 1, 2, Scalar(0, 0, 255), 2);
 			}
 
 		}
@@ -580,11 +603,11 @@ double calc_distance(Coordenada j1, Coordenada j2) {
 
 static double getAngle(Recta r1, Recta r2)
 {
-	double numerador = r1.getVector().getX()*r2.getVector().getX() + 
-						r1.getVector().getY()*r2.getVector().getY();
-	
+	double numerador = r1.getVector().getX()*r2.getVector().getX() +
+		r1.getVector().getY()*r2.getVector().getY();
+
 	double denom = sqrt((pow(r1.getVector().getX(), 2) + pow(r1.getVector().getY(), 2))*
-						(pow(r2.getVector().getX(), 2) + pow(r2.getVector().getY(), 2)));
+		(pow(r2.getVector().getX(), 2) + pow(r2.getVector().getY(), 2)));
 
 	//double res = (r1.getM() - r2.getM()) / (1 + r1.getM() * r2.getM());
 	//double angleInRadians = atan(res);
@@ -602,7 +625,7 @@ static double getAngle(Recta r1, Recta r2)
 		double angleInRadians = acos(numerador / denom);
 		angle = angleInRadians * 180 / M_PI;
 	}
-	
+
 	double result = getAreaOfPoint(r1, r2.getCoor2());
 	if (result < 0)
 		angle = 360 - angle;
@@ -677,25 +700,24 @@ int main(int argc, char* argv[])
 		Recta playerDirection = getRect(coorPlayer, coor2Player);
 		//cout << "Jugador Principal: ángulo (" << coorPlayer.getX() << "," << coorPlayer.getY() << ")" << endl;
 
-		cv::line(cameraFeed, player.at(0), player.at(1), Scalar(110, 220, 0), 2, 8);
+		cv::line(cameraFeed, player.at(0), player.at(1), Scalar(110, 220, 0), 5, 8);
 
 		vector<Point> ownTeam = trackTeam(cameraFeed, false);
 		vector<Point> otherTeam = trackTeam(cameraFeed, true);
 		vector<Jugador> myTeam;
 		vector<Jugador> opponents;
-		
+
 		for (int i = 0; i < ownTeam.size(); i++) {
 			Coordenada c1 = getCoordinateFromPoint(ownTeam.at(i));
 			Recta r = getRect(coorPlayer, c1);
 			double angle = getAngle(playerDirection, r);
 			double distance = calc_distance(coorPlayer, c1);
-			myTeam.push_back(Jugador(c1,angle,distance,true));
-			cv::circle(cameraFeed, cv::Point(c1.getX(), c1.getY()), 6, Scalar(110, 220, 0));
+			myTeam.push_back(Jugador(c1, angle, distance, true));
 			cout << "Jugador " << i << ": ángulo (" << angle << ")" << endl;
 		}
 
-		
-		
+
+
 		for (int i = 0; i < otherTeam.size(); i++) {
 			Coordenada c1 = getCoordinateFromPoint(otherTeam.at(i));
 			Recta r = getRect(coorPlayer, c1);
@@ -715,11 +737,12 @@ int main(int argc, char* argv[])
 						cout << "CUIDAAAAO QUE VIENEEEEEE" << endl;
 						break;
 					}
-						
+
 				}
 				if (j == (opponents.size() - 1)) {
 					calibrateLEDs(myTeam.at(i).getAnglePLayer(), myTeam.at(i).getDistance());
-					cout << "ENTRA : "<< i << endl;
+					cv::line(cameraFeed, player.at(0), Point(myTeam.at(i).getCoor().getX(), myTeam.at(i).getCoor().getY()), Scalar(110, 220, 0), 5, 8);
+					cout << "ENTRA : " << i << endl;
 				}
 			}
 		}
