@@ -28,4 +28,5 @@ c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(441): warning C4267: 'ini
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(457): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(458): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(488): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(646): warning C4267: 'argumento': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
   OpenCV2.vcxproj -> C:\Users\Diego\Desktop\asdf2\eyelight\x64\Debug\OpenCV2.exe
