@@ -13,6 +13,8 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+//#include <Windows.h>
+
 #include <sstream>
 #include <string>
 #include <iostream>
@@ -677,6 +679,45 @@ void initArray() {
 	}
 }
 
+/*void sendDataToServer() {
+	char szPath[] = "python sendData.py";
+
+	// Gives info on the thread and process for the new process
+	PROCESS_INFORMATION pif;
+
+	// Defines how to start the program
+	STARTUPINFO si;
+
+	// Zero the STARTUPINFO struct
+	ZeroMemory(&si, sizeof(si));
+
+	// Must set size of structure
+	si.cb = sizeof(si);
+
+	BOOL bRet = CreateProcess(szPath, // Path to executable file
+		NULL,   // Command string - not needed here
+		NULL,   // Process handle not inherited
+		NULL,   // Thread handle not inherited
+		FALSE,  // No inheritance of handles
+		0,      // No special flags
+		NULL,   // Same environment block as this prog
+		NULL,   // Current directory - no separate path
+		&si,    // Pointer to STARTUPINFO
+		&pif); // Pointer to PROCESS_INFORMATION
+
+	if (FALSE == bRet)
+	{
+		//MessageBox(HWND_DESKTOP, "Unable to start program", "", MB_OK);
+	}
+
+	// Close handle to process
+	CloseHandle(pif.hProcess);
+
+	// Close handle to thread
+	CloseHandle(pif.hThread);
+	getchar();
+}*/
+
 int main(int argc, char* argv[])
 {
 	Mat cameraFeed;
@@ -747,7 +788,9 @@ int main(int argc, char* argv[])
 			}
 		}
 
+		
 		getStringFromArray();
+		//sendDataToServer();
 
 		imshow(windowName, cameraFeed);
 		waitKey(30);

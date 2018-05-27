@@ -1,9 +1,5 @@
 ﻿  main.cpp
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(56): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(96): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
-  c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(96): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(97): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
-  c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(97): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(58): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(98): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
   c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(98): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(99): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
@@ -12,21 +8,25 @@ c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(100): warning C4474: "spr
   c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(100): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(101): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
   c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(101): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(118): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(119): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(102): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(102): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(103): warning C4474: "sprintf": se pasaron demasiados argumentos para la cadena de formato
+  c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(103): note: los marcadores de posición y sus parámetros esperan 0 argumentos variádicos, pero se proporcionaron 1
 c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(120): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(205): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(221): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(222): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(268): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(284): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(285): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(355): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(371): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(372): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(441): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(457): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(458): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(488): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(646): warning C4267: 'argumento': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(121): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(122): warning C4244: 'inicializando': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(222): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(238): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(239): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(285): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(301): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(302): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(374): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(390): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(391): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(466): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(482): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(483): warning C4244: 'argumento': conversión de 'double' a 'int'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(513): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+c:\users\diego\desktop\asdf2\eyelight\opencv2\main.cpp(671): warning C4267: 'argumento': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
   OpenCV2.vcxproj -> C:\Users\Diego\Desktop\asdf2\eyelight\x64\Debug\OpenCV2.exe
